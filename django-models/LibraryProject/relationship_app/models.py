@@ -5,6 +5,23 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test, login_required
+from django.db import models
+
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    published_year = models.IntegerField()
+
+    class Meta:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        permissions = [
+            ("can_add_book", "Can add a book"),
+            ("can_change_book", "Can change a book"),
+            ("can_delete_book", "Can delete a book"),
+        ]
+
+    def __str__(self):
+        return self.title
+
 
 # ---- Role Check Functions ----
 def is_admin(user):

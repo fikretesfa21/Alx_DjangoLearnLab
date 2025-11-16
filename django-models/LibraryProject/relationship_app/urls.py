@@ -4,6 +4,9 @@ from .views import list_books
 from .views import LibraryDetailView
 from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
+    path('books/add/', views.add_book, name='add_book'),
+    path('books/<int:pk>/edit/', views.edit_book, name='edit_book'),
+    path('books/<int:pk>/delete/', views.delete_book, name='delete_book'),
     path("admin-role/", views.admin_view, name="admin_view"),
     path("librarian-role/", views.librarian_view, name="librarian_view"),
     path("member-role/", views.member_view, name="member_view"),
