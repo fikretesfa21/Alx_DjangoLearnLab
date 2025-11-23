@@ -6,16 +6,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, permission_required
 from django import forms
 from .models import Library, Book # Assuming Library and Book are still needed
-
+from django.contrib.auth.decorators import user_passes_test, permission_required
+# DELETE 'from django import forms' if unused
+from .models import Library, Book 
+from .forms import BookForm
 
 # =========================================================================
 # BOOK MANAGEMENT (CRUD) VIEWS - Protected by NEW Custom Permissions
 # =========================================================================
-
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = ['title', 'author', 'published_year']
 
 
 # View protected by NEW custom 'can_create' permission
