@@ -29,6 +29,52 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_BROWSER_XSS_FILTER = True
+# settings.py
+
+# ... (Existing imports and settings) ...
+
+# ====================================================================
+# HTTPS AND SECURITY ENFORCEMENT CONFIGURATION (Steps 1, 2, 3)
+# ====================================================================
+
+# NOTE: These settings should ONLY be active when your site is served 
+# via HTTPS. Enabling them while running on HTTP/localhost may cause 
+# redirect loops or site inaccessibility.
+
+# --- Step 1: Configure Django for HTTPS Support ---
+
+# SECURE_SSL_REDIRECT: Redirects all HTTP requests to HTTPS. 
+# This is fundamental for enforcing secure communication.
+SECURE_SSL_REDIRECT = True 
+
+# SECURE_HSTS_SECONDS: Sets the HSTS (HTTP Strict Transport Security) header.
+# This tells the browser to ONLY connect over HTTPS for the specified duration (in seconds).
+# 31536000 seconds = 1 year (recommended production value).
+SECURE_HSTS_SECONDS = 31536000
+
+# SECURE_HSTS_INCLUDE_SUBDOMAINS: Adds the 'includeSubDomains' directive to HSTS header,
+# ensuring the policy applies to all subdomains (e.g., api.example.com).
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# SECURE_HSTS_PRELOAD: Allows your site to be included in major browser HSTS preload lists.
+# NOTE: Requires SECURE_HSTS_SECONDS to be high and includesSubDomains to be true.
+SECURE_HSTS_PRELOAD = True
+
+
+# --- Step 2: Enforce Secure Cookies ---
+
+# SESSION_COOKIE_SECURE: Ensures the session cookie is only sent over HTTPS.
+SESSION_COOKIE_SECURE = True
+
+# CSRF_COOKIE_SECURE: Ensures the CSRF cookie is only sent over HTTPS.
+CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 ALLOWED_HOSTS = []
 
 
