@@ -63,7 +63,7 @@ def delete_book(request, pk):
 # Function-based view: List all books
 # View protected by NEW custom 'can_view' permission
 @permission_required('bookshelf.can_view', raise_exception=True)
-def list_books(request):
+def book_list(request):
     books = Book.objects.all()
     # Use the full app-relative path to the template
     return render(request, 'relationship_app/list_books.html', {'books': books})
