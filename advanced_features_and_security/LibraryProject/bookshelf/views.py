@@ -13,6 +13,73 @@ from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django import forms
 
+
+# In relationship_app/views.py
+
+# ... (all existing imports) ...
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'published_year']
+
+
+# View protected by NEW custom 'can_create' permission
+@permission_required('relationship_app.can_create', raise_exception=True)
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = BookForm()
+
+    return render(request, "relationship_app/add_book.html", {"form": form})
+
+
+# View protected by NEW custom 'can_edit' permission
+@permission_required('relationship_app.can_edit', raise_exception=True)
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = BookForm(instance=book)
+
+    return render(request, "relationship_app/edit_book.html", {"form": form})
+
+
+# View protected by NEW custom 'can_delete' permission
+@permission_required('relationship_app.can_delete', raise_exception=True)
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    # The requirement is just to check permission before deleting
+    if request.method == 'POST': # Add POST check for safety in real app
+        book.delete()
+        return redirect('list_books')
+    # If using a simple function, delete immediately:
+    # book.delete()
+    # return redirect('list_books')
+    
+    # Assuming you want a confirmation page:
+    return render(request, 'relationship_app/book_confirm_delete.html', {'book': book})
+
+
+# Function-based view: List all books
+# View protected by NEW custom 'can_view' permission
+@permission_required('relationship_app.can_view', raise_exception=True)
+def list_books(request):
+    books = Book.objects.all()
+    # Use the full app-relative path to the template
+    return render(request, 'relationship_app/list_books.html', {'books': books})
+
+# ... (rest of your views: LibraryDetailView, admin_view, is_admin, etc.) ...
+
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book

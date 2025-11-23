@@ -98,21 +98,36 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+# ... (all your existing imports and CustomUser, CustomUserManager classes) ...
+
+# ... (all your existing Role Check Functions) ...
+# ... (all your existing UserProfile, Author, Library, Librarian classes) ...
+
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    published_year = models.IntegerField()  # <--- ADD THIS LINE BACK
+    published_year = models.IntegerField()
     
     class Meta:
+        # EXISTING DJANGO-MAPPED PERMISSIONS (Keep these)
+        # Note: Django automatically creates 'add_book', 'change_book', 'delete_book'
+        # based on the model name. Your existing definitions override them, which is fine.
         permissions = [
             ("can_add_book", "Can add a book"),
             ("can_change_book", "Can change a book"),
             ("can_delete_book", "Can delete a book"),
+            
+            # --- NEW CUSTOM PERMISSIONS ---
+            ("can_view", "Can view book details"),
+            ("can_create", "Can create a new book"),
+            ("can_edit", "Can edit existing books"),
+            ("can_delete", "Can delete existing books"),
         ]
 
     def __str__(self):
         return self.title
 
+# ... (rest of your models) ...
 
 class Library(models.Model):
     name = models.CharField(max_length=100)
