@@ -24,7 +24,11 @@ SECRET_KEY = 'django-insecure-j=bsn2k^uqx1cr_thlv#9gb_9g*=xl@3554sm$r*-*@g(k$)s!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_BROWSER_XSS_FILTER = True
 ALLOWED_HOSTS = []
 
 
@@ -37,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'relationship_app',
+    'bookshelf',
 ]
 
 MIDDLEWARE = [
