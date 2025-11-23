@@ -9,7 +9,7 @@ from .models import Library, Book # Assuming Library and Book are still needed
 from django.contrib.auth.decorators import user_passes_test, permission_required
 # DELETE 'from django import forms' if unused
 from .models import Library, Book 
-from .forms import BookForm
+from .forms import BookForm , ExampleForm
 
 # =========================================================================
 # BOOK MANAGEMENT (CRUD) VIEWS - Protected by NEW Custom Permissions
