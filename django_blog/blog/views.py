@@ -6,11 +6,12 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from django.shortcuts import render, redirect
+from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, UserUpdateForm, CommentForm
-from .models import Post, Comment
+from .forms import CustomUserCreationForm, UserUpdateForm, CommentForm, PostForm
+from .models import Post, Comment, Tag
 
 # ... existing views ...
 
@@ -20,12 +21,34 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-published_date']
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(tags__name__icontains=query)
+            ).distinct()
+        return queryset
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+    ordering = ['-published_date']
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('slug')
+        tag = get_object_or_404(Tag, name=tag_slug)
+        return Post.objects.filter(tags=tag).order_by('-published_date')
+
 class PostDetailView(DetailView):
     model = Post
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    form_class = PostForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -33,7 +56,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
+    form_class = PostForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
