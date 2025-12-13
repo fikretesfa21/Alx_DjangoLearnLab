@@ -17,7 +17,7 @@
         {% if object.tags.all %}
         <p>Tags:
             {% for tag in object.tags.all %}
-            <a href="{% url 'tag-posts' tag.name %}" class="badge badge-primary">{{ tag.name }}</a>
+            <a href="{% url 'tag-posts' tag.slug %}" class="badge badge-primary">{{ tag.name }}</a>
             {% endfor %}
         </p>
         {% endif %}

@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserUpdateForm, CommentForm, PostForm
-from .models import Post, Comment, Tag
+from .models import Post, Comment
 
 # ... existing views ...
 
@@ -40,8 +40,7 @@ class PostByTagListView(ListView):
 
     def get_queryset(self):
         tag_slug = self.kwargs.get('slug')
-        tag = get_object_or_404(Tag, name=tag_slug)
-        return Post.objects.filter(tags=tag).order_by('-published_date')
+        return Post.objects.filter(tags__slug=tag_slug).order_by('-published_date')
 
 class PostDetailView(DetailView):
     model = Post
