@@ -20,7 +20,7 @@ urlpatterns = [
     path('comment/<int:pk>/update/', views.CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment-delete'),
     path('search/', views.PostListView.as_view(), name='search'),
-    path('tags/<str:slug>/', views.PostByTagListView.as_view(), name='tag-posts'),
+    path('tags/<slug:tag_slug>/', views.PostByTagListView.as_view(), name='tag-posts'),
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='blog/login.html'), name='login'),

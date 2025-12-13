@@ -39,7 +39,7 @@ class PostByTagListView(ListView):
     ordering = ['-published_date']
 
     def get_queryset(self):
-        tag_slug = self.kwargs.get('slug')
+        tag_slug = self.kwargs.get('tag_slug')
         return Post.objects.filter(tags__slug=tag_slug).order_by('-published_date')
 
 class PostDetailView(DetailView):

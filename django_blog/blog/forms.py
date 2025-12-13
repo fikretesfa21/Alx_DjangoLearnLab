@@ -5,9 +5,7 @@ from .models import Comment, Post
 from taggit.forms import TagWidget
 
 class CustomUserCreationForm(UserCreationForm):
-    # ... (existing code)
-
-# ... (existing code for UserUpdateForm and CommentForm)
+   pass
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -38,3 +36,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': TagWidget(),
+        }
